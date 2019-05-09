@@ -17,7 +17,8 @@ import funcoes as f
 
 #INICIALIZAÇÃO: Criação das estruturas necessárias
 processos = f.interpreta("arq1.txt")
-listaDeTamanhos = f.listaDeTamanhos(processos)
+f.listaDeTamanhos(processos)
+#tamanhos = lista de tamanho dos processos = [tamanho,...]
 dicionarioDeEntrada = f.dicionarioDeEntrada(processos)
 dicionarioDeSaida = f.dicionarioDeSaida(processos)
 dicionarioDeProcessos = {}

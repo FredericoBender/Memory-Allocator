@@ -33,7 +33,6 @@ def listaDeTamanhos(processos):
     for i in processos:
         tamanhos.append(i[0])
     #lista de tamanho dos processos = [tamanho,...]
-    return tamanhos
 
 #Extrai valores da lista de processos para criar um dicionário com os tempos de entrada de cada processo
 def dicionarioDeEntrada(processos):
@@ -73,6 +72,7 @@ def desalocaProcesso(processo,dicionarioDeProcessos):
         dicionarioDeProcessos[posterior][2]=anterior
     except:
         pass
+    dicionarioDeProcessos[processo].pop()
     #Retorna dicionário atualizado
     return dicionarioDeProcessos
 
