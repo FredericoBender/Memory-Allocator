@@ -30,16 +30,24 @@ print(dicionarioDeEntrada, end='\n\n')
 print("Dicionário de Saídas:\n")
 print(dicionarioDeSaida,end='\n\n')"""
 ##################################################
+modo = 0
 
 #Início algoritmo: Cada loop é um ciclo
 while (dicionarioDeSaida):
     #Remoção de processo
     if (clock in dicionarioDeSaida):
-        while (dicionarioDeSaida[clock]):
-            processo = dicionarioDeEntrada[clock].pop() #Remove e salva ultimo elemento da lista
-            dicionarioDeProcessos = desalocaProcesso(processo,dicionarioDeProcessos)
+        #print("clock: " + str(clock))
+        #while (dicionarioDeSaida[clock]):
+            #processo = dicionarioDeSaida[clock].pop() #Remove e salva ultimo elemento da lista
+            #dicionarioDeProcessos = f.desalocaProcesso(processo,dicionarioDeProcessos)
+        pass
     #Inserção de processo
     if (clock in dicionarioDeEntrada):
+        #print(str(clock) + ":" + str(dicionarioDeEntrada[clock]))
         while (dicionarioDeEntrada[clock]):
-            processo = dicionarioDeSaida[clock].pop() #Remove e salva ultimo elemento da lista
-            dicionarioDeProcessos = alocaProcesso(processo,dicionarioDeProcessos,modo)
+            print(str(clock) +":" +str(dicionarioDeEntrada))
+            processo = dicionarioDeEntrada[clock].pop() #Remove e salva ultimo elemento da lista
+            dicionarioDeProcessos = f.alocarMemoria(processo,dicionarioDeProcessos,modo)
+            #print(str(clock) +":" +str(dicionarioDeProcessos))
+        print("\n")
+    clock+=1

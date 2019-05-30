@@ -37,7 +37,7 @@ def listaDeTamanhos(processos):
 #Extrai valores da lista de processos para criar um dicionário com os tempos de entrada de cada processo
 def dicionarioDeEntrada(processos):
     temposEntrada ={}
-    processoAtual=0
+    processoAtual=1
     for i in processos:
         if (i[2] in temposEntrada):#processos[2] é tempo de chegada
             temposEntrada[i[2]].append(processoAtual)
@@ -50,7 +50,7 @@ def dicionarioDeEntrada(processos):
 #Extrai valores da lista de processos para criar um dicionário com os tempos de saída de cada processo
 def dicionarioDeSaida(processos):
     temposSaida ={}
-    processoAtual=0
+    processoAtual=1
     for i in processos:
         if ((i[1]+i[2]) in temposSaida):
             temposSaida[i[1]+i[2]].append(processoAtual)
@@ -62,6 +62,7 @@ def dicionarioDeSaida(processos):
 
 #Desaloca processo do dicionário de processos
 def desalocaProcesso(processo,dicionarioDeProcessos):
+    print(dicionarioDeProcessos)
     anterior = dicionarioDeProcessos[processo][2]
     posterior = dicionarioDeProcessos[processo][3]
     try:
@@ -75,6 +76,10 @@ def desalocaProcesso(processo,dicionarioDeProcessos):
     dicionarioDeProcessos[processo].pop()
     #Retorna dicionário atualizado
     return dicionarioDeProcessos
+
+def varreMemoria(dicionarioDeProcessos,modo):
+    if (dicionarioDeProcessos):
+        pass
 
 #Aloca processo no dicionário de processos
 def alocarMemoria(processo,dicionarioDeProcessos,modo):
