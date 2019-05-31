@@ -1,5 +1,5 @@
 #encoding=utf-8
-
+import math
 #DEFINIÇÃO DO PADRÃO DE ESCRITA
     #COMENTÁRIOS
         #1º Modo de escrita dos comentários livre, ´~^-_+=, etc, permitidos
@@ -37,7 +37,7 @@ def listaDeTamanhos(processos):
 #Extrai valores da lista de processos para criar um dicionário com os tempos de entrada de cada processo
 def dicionarioDeEntrada(processos):
     temposEntrada ={}
-    processoAtual=1
+    processoAtual=0
     for i in processos:
         if (i[2] in temposEntrada):#processos[2] é tempo de chegada
             temposEntrada[i[2]].append(processoAtual)
@@ -50,7 +50,7 @@ def dicionarioDeEntrada(processos):
 #Extrai valores da lista de processos para criar um dicionário com os tempos de saída de cada processo
 def dicionarioDeSaida(processos):
     temposSaida ={}
-    processoAtual=1
+    processoAtual=0
     for i in processos:
         if ((i[1]+i[2]) in temposSaida):
             temposSaida[i[1]+i[2]].append(processoAtual)
@@ -77,12 +77,43 @@ def desalocaProcesso(processo,dicionarioDeProcessos):
     #Retorna dicionário atualizado
     return dicionarioDeProcessos
 
-def varreMemoria(dicionarioDeProcessos,modo):
+def varreMemoria(dicionarioDeProcessos,tamanhoProcesso,modo):
+   # print(tamanhoProcesso)
     if (dicionarioDeProcessos):
-        pass
+        return "I"
+
+    for i in dicionarioDeProcessos:
+        print(i)
+        if("I" in i):
+           # print(pro)
+            processoAtual = i
+            if(tamanhoProcesso <= i[0]):
+                menorDistancia = i[0]
+                maiorDistancia = i[0]
+            else:
+                menorDistancia = float('inf')
+                maiorDistancia = 0
+    processoSeguinte=dicionarioDeProcessos[processoAtual][3]
+
+    while(processoAtual!="F"):
+        distancia = dicionarioDeProcessos[processoSeguinte][0]-dicionarioDeProcessos[processoAtual][0]
+        if ((distancia<menorDistancia) and (tamanhoProcesso<=distancia)):
+            menorDistancia = distancia
+            posicao = processoAtual[0]
+        if ((distancia>maiorDistancia) and (tamanhoProcesso<=distancia)):
+            maiorDistancia = distancia
+            posicao = processoAtual[0]
+        processoAtual=processoSeguinte
+        processoSeguinte= dicionarioDeProcessos[processoSeguinte][3] 
+        
+
+
 
 #Aloca processo no dicionário de processos
 def alocarMemoria(processo,dicionarioDeProcessos,modo):
+    dicionarioDeProcessos={7:[85,95,6,"F"],10:[20,40,"I",6]}
+    posicao = varreMemoria(dicionarioDeProcessos,tamanhos[processo],modo)
+    
     def firstFit(processo,dicionarioDeProcessos):
         pass
     def bestFit(processo, dicionarioDeProcessos):
@@ -95,3 +126,4 @@ def alocarMemoria(processo,dicionarioDeProcessos,modo):
         bestFit(processo,dicionarioDeProcessos)
     if(modo==2):
         worstFit(processo,dicionarioDeProcessos)
+    return dicionarioDeProcessos

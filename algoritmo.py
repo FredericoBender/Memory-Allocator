@@ -45,9 +45,9 @@ while (dicionarioDeSaida):
     if (clock in dicionarioDeEntrada):
         #print(str(clock) + ":" + str(dicionarioDeEntrada[clock]))
         while (dicionarioDeEntrada[clock]):
-            print(str(clock) +":" +str(dicionarioDeEntrada))
+            ###print(str(clock) +":" +str(dicionarioDeEntrada))
             processo = dicionarioDeEntrada[clock].pop() #Remove e salva ultimo elemento da lista
             dicionarioDeProcessos = f.alocarMemoria(processo,dicionarioDeProcessos,modo)
-            #print(str(clock) +":" +str(dicionarioDeProcessos))
-        print("\n")
+            print(str(clock) +":" +str(dicionarioDeProcessos))
+        #print("\n")
     clock+=1
