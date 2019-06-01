@@ -137,7 +137,6 @@ def varreMemoria(dicionarioDeProcessos,tamanhoProcesso,modo,tamMemoria):
 #Aloca processo no dicionário de processos
 def alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo):
     processoAnterior,processoPosterior = varreMemoria(dicionarioDeProcessos,tamanhos[processo],modo,tamMemoria)
-    print(processoAnterior)
     if(processoAnterior == -1):
 
         return dicionarioDeProcessos, False

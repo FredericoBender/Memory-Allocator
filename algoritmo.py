@@ -34,11 +34,10 @@ modo = "best"
 tamMemoria = 50
 #Início algoritmo: Cada loop é um ciclo
 while (dicionarioDeSaida):
+    print(dicionarioDeProcessos)
     #Inserção de processo
     if (clock in dicionarioDeEntrada):
-        #print(str(clock) + ":" + str(dicionarioDeEntrada[clock]))
         while (dicionarioDeEntrada[clock]):
-            ###print(str(clock) +":" +str(dicionarioDeEntrada))
             processo = dicionarioDeEntrada[clock].pop() #Remove e salva ultimo elemento da lista
             dicionarioDeProcessos, inseriu = f.alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo)
             if (inseriu==False):
@@ -46,8 +45,6 @@ while (dicionarioDeSaida):
                     dicionarioDeEntrada[clock+1].append(processo)
                 else:
                     dicionarioDeEntrada[clock+1]=[processo]
-
-                #Confere se existe o clock seguinte no dicionario de saídas
                 for i in dicionarioDeSaida:
                     if processo in dicionarioDeSaida[i]:
                         tempoDeSaida = i
@@ -58,17 +55,13 @@ while (dicionarioDeSaida):
                 
                 dicionarioDeSaida[tempoDeSaida].remove(processo)
                 
-        #print("\n")
     #Remoção de processo
     if (clock in dicionarioDeSaida):
-        #print("clock: " + str(clock))
-
-        #Não esquecer de alterar dicionario de saida e entrada quando nao conseguir alocar o processo
 
         while (dicionarioDeSaida[clock]):
             processo = dicionarioDeSaida[clock].pop() #Remove e salva ultimo elemento da lista
             dicionarioDeProcessos = f.desalocaProcesso(processo,dicionarioDeProcessos)
         del dicionarioDeSaida[clock]
-    print(str(clock) +":" +str(dicionarioDeProcessos),end="\n")
+
     
     clock+=1
