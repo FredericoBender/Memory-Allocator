@@ -62,7 +62,6 @@ def dicionarioDeSaida(processos):
 
 #Desaloca processo do dicionário de processos
 def desalocaProcesso(processo,dicionarioDeProcessos):
-    print(dicionarioDeProcessos)
     anterior = dicionarioDeProcessos[processo][2]
     posterior = dicionarioDeProcessos[processo][3]
     try:
@@ -73,57 +72,76 @@ def desalocaProcesso(processo,dicionarioDeProcessos):
         dicionarioDeProcessos[posterior][2]=anterior
     except:
         pass
-    dicionarioDeProcessos[processo].pop()
+    del dicionarioDeProcessos[processo]
     #Retorna dicionário atualizado
     return dicionarioDeProcessos
 
+#Varre a memória de acordo com a eurística determinada, retornando qual será o processo anterior à nova inserção
 def varreMemoria(dicionarioDeProcessos,tamanhoProcesso,modo):
+    
    # print(tamanhoProcesso)
-    if (dicionarioDeProcessos):
-        return "I"
+    if not (dicionarioDeProcessos):
+        return "I","F"
 
     for i in dicionarioDeProcessos:
-        print(i)
-        if("I" in i):
-           # print(pro)
+    
+        if("I" in dicionarioDeProcessos[i]):
             processoAtual = i
-            if(tamanhoProcesso <= i[0]):
-                menorDistancia = i[0]
-                maiorDistancia = i[0]
+            if(tamanhoProcesso <= dicionarioDeProcessos[i][0]):
+                menorDistancia = dicionarioDeProcessos[i][0]
+                maiorDistancia = dicionarioDeProcessos[i][0]
+                if(modo == "first"):
+                    return "I",processoAtual
             else:
                 menorDistancia = float('inf')
                 maiorDistancia = 0
+                menorProcesso = "I"
+                maiorProcesso = "I"
     processoSeguinte=dicionarioDeProcessos[processoAtual][3]
 
-    while(processoAtual!="F"):
-        distancia = dicionarioDeProcessos[processoSeguinte][0]-dicionarioDeProcessos[processoAtual][0]
+    while(processoSeguinte!="F"):
+        distancia = dicionarioDeProcessos[processoSeguinte][0]-dicionarioDeProcessos[processoAtual][1]
+        if ((modo == "first") and (tamanhoProcesso<=distancia)):
+            return processoAtual,dicionarioDeProcessos[processoAtual][2]
         if ((distancia<menorDistancia) and (tamanhoProcesso<=distancia)):
             menorDistancia = distancia
-            posicao = processoAtual[0]
+            menorProcesso = processoAtual
         if ((distancia>maiorDistancia) and (tamanhoProcesso<=distancia)):
             maiorDistancia = distancia
-            posicao = processoAtual[0]
+            maiorProcesso = processoAtual
         processoAtual=processoSeguinte
         processoSeguinte= dicionarioDeProcessos[processoSeguinte][3] 
-        
-
-
+    if(modo=="worst"):
+        try:
+            return maiorProcesso,dicionarioDeProcessos[maiorProcesso][2]
+        except:
+            return maiorProcesso,"F"
+    elif(modo=="best"):
+            return menorProcesso,dicionarioDeProcessos[menorProcesso][2]
 
 #Aloca processo no dicionário de processos
-def alocarMemoria(processo,dicionarioDeProcessos,modo):
-    dicionarioDeProcessos={7:[85,95,6,"F"],10:[20,40,"I",6]}
-    posicao = varreMemoria(dicionarioDeProcessos,tamanhos[processo],modo)
+def alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo):
+    processoAnterior,processoPosterior = varreMemoria(dicionarioDeProcessos,tamanhos[processo],modo)
+    print("Processo anterior: ")
+    padrao = True
+    if (processoPosterior != "F"):
+        dicionarioDeProcessos[processoPosterior][2]=processo
+    else:
+        padrao=False
+        try:
+            posicao = dicionarioDeProcessos[processoAnterior][1]
+        except:
+            posicao = 0
+    if (processoAnterior != "I"):
+        dicionarioDeProcessos[processoAnterior][3]=processo
+    else:
+        padrao=False
+        posicao = 0
+    if(padrao==True):
+        posicao = dicionarioDeProcessos[processoAnterior][1]
+
+    dicionarioDeProcessos[processo]=[posicao,posicao+tamanhos[processo],processoAnterior,processoPosterior]
     
-    def firstFit(processo,dicionarioDeProcessos):
-        pass
-    def bestFit(processo, dicionarioDeProcessos):
-        pass
-    def worstFit(processo, dicionarioDeProcessos):
-        pass
-    if(modo==0):
-        firstFit(processo,dicionarioDeProcessos)
-    if(modo==1):
-        bestFit(processo,dicionarioDeProcessos)
-    if(modo==2):
-        worstFit(processo,dicionarioDeProcessos)
+    
+    
     return dicionarioDeProcessos
