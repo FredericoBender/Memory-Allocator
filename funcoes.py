@@ -91,6 +91,9 @@ def varreMemoria(dicionarioDeProcessos,tamanhoProcesso,modo,tamMemoria):
             if(tamanhoProcesso <= dicionarioDeProcessos[i][0]):
                 menorDistancia = dicionarioDeProcessos[i][0]
                 maiorDistancia = dicionarioDeProcessos[i][0]
+                maiorProcesso = "I"
+                menorProcesso = "I"
+                processoPosterior = i
                 if(modo == "first"):
                     return "I",processoAtual
             else:
@@ -104,7 +107,6 @@ def varreMemoria(dicionarioDeProcessos,tamanhoProcesso,modo,tamMemoria):
             distancia = tamMemoria-dicionarioDeProcessos[processoAtual][1]
         else:
             distancia = dicionarioDeProcessos[processoSeguinte][0]-dicionarioDeProcessos[processoAtual][1]
-        
         if ((modo == "first") and (tamanhoProcesso<=distancia)):
             return processoAtual,dicionarioDeProcessos[processoAtual][3]
         if ((distancia<menorDistancia) and (tamanhoProcesso<=distancia)):
@@ -114,23 +116,32 @@ def varreMemoria(dicionarioDeProcessos,tamanhoProcesso,modo,tamMemoria):
             maiorDistancia = distancia
             maiorProcesso = processoAtual
         processoAtual=processoSeguinte
-        if(processoSeguinte=="F"):
+        if(processoAtual=="F"):
             break
         else:
             processoSeguinte= dicionarioDeProcessos[processoSeguinte][3] 
-    if(modo=="worst"):
-        try:
-            return maiorProcesso,dicionarioDeProcessos[maiorProcesso][3]
-        except:
-            return maiorProcesso,"F"
-    elif(modo=="best"):
-            return menorProcesso,dicionarioDeProcessos[menorProcesso][3]
-    
+    if(maiorDistancia!=0):
+        if(modo=="worst"):  
+                try:
+                    return maiorProcesso,dicionarioDeProcessos[maiorProcesso][3]
+                except:
+                    return maiorProcesso, processoPosterior
+        elif(modo=="best"):
+                try:
+                    return menorProcesso,dicionarioDeProcessos[menorProcesso][3]
+                except:
+                    return menorProcesso, processoPosterior
+    else:
+        #Retorna situação onde não cabe o processo
+        return -1,-1
 #Aloca processo no dicionário de processos
 def alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo):
     processoAnterior,processoPosterior = varreMemoria(dicionarioDeProcessos,tamanhos[processo],modo,tamMemoria)
-    padrao = True
+    print(processoAnterior)
+    if(processoAnterior == -1):
 
+        return dicionarioDeProcessos, False
+    padrao = True
     if (processoPosterior != "F"):
         dicionarioDeProcessos[processoPosterior][2]=processo
     else:
@@ -148,7 +159,6 @@ def alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo):
         posicao = dicionarioDeProcessos[processoAnterior][1]
 
     dicionarioDeProcessos[processo]=[posicao,posicao+tamanhos[processo],processoAnterior,processoPosterior]
+       
     
-    
-    
-    return dicionarioDeProcessos
+    return dicionarioDeProcessos, True
