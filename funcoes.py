@@ -226,7 +226,6 @@ def calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria):
     for i in range(len(entradaParteGrafica)-1): #Período intermediário do algoritmo
         if (len(entradaParteGrafica[i])>2):
             buracosMeio = 0
-            print(entradaParteGrafica)
             if(entradaParteGrafica[i][1][0]>0):
                 buracosMeio+=1
             if((entradaParteGrafica[i][-1][0]+entradaParteGrafica[i][-1][1])<tamMemoria):
