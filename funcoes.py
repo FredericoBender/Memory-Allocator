@@ -236,3 +236,4 @@ def calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria):
             for k in range(entradaParteGrafica[i+1][0]-entradaParteGrafica[i][0]): #Adiciona os buracos do final
                 buracosPorClock.append(buracosMeio)
     return buracosPorClock
+    pass
