@@ -85,7 +85,6 @@ def varreMemoria(dicionarioDeProcessos,tamanhoProcesso,modo,tamMemoria):
 
     #Inicialização quando tem pelo menos um processo na memória
     for i in dicionarioDeProcessos:
-    
         if("I" in dicionarioDeProcessos[i]):
             processoAtual = i
             if(tamanhoProcesso <= dicionarioDeProcessos[i][0]):
@@ -134,6 +133,7 @@ def varreMemoria(dicionarioDeProcessos,tamanhoProcesso,modo,tamMemoria):
     else:
         #Retorna situação onde não cabe o processo
         return -1,-1
+
 #Aloca processo no dicionário de processos
 def alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo):
     processoAnterior,processoPosterior = varreMemoria(dicionarioDeProcessos,tamanhos[processo],modo,tamMemoria)
@@ -159,11 +159,9 @@ def alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo):
 
     dicionarioDeProcessos[processo]=[posicao,posicao+tamanhos[processo],processoAnterior,processoPosterior]
        
-    
     return dicionarioDeProcessos, True
 
 #Função que incrementa o número de tentativas falhas a cada vez que não conseguir inserir um processo
-
 def tentativasFalhas(inseriu,tentativasFalhadas):
     if (inseriu==False):
         tentativasFalhadas+=1
@@ -202,13 +200,37 @@ def geraEntradaDaParteGrafica(entradaParteGrafica,clock,dicionarioDeProcessos):
     processos.sort(key=funcao) #Ordena matriz pelo 1º indície
     for i in processos:
         indiceClock.append([i[0],i[1]-i[0]]) #append em indiceclock
-    print("isso: " +str(indiceClock)+"\n\n")
     entradaParteGrafica.append(indiceClock) 
     return entradaParteGrafica
 
 #Retorna uma lista com o número de buracos por ciclo de CLOCK na memória
-def calculaFragmentacaoMemoria(entradaParteGrafica):
-    #entradaParteGrafica=[[4,[4,1444],[2,5],[6,566]],[4,[4,1444],[2,5],[6,566]]]
-    #for i in entradaParteGrafica:
-    #    x=i.pop(0)
-    pass
+def calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria):
+    buracosPorClock=[]
+
+    inicio=entradaParteGrafica[0][0] #Período inicial que tinha 1 buraco, antes da primeira inserção de processo
+    for i in range(inicio): #Adiciona os buracos do inicio
+        buracosPorClock.append(1)
+
+    buracosFinal=0 #Período final do algoritmo
+    if(entradaParteGrafica[-1][1][0]>0):
+        buracosFinal+=1
+    if((entradaParteGrafica[-1][-1][0]+entradaParteGrafica[-1][-1][1])<tamMemoria):
+        buracosFinal+=1
+    for i in range(len(entradaParteGrafica[-1])-2):
+        if((entradaParteGrafica[-1][i+2][0]-entradaParteGrafica[-1][i+1][1])>0):
+            buracosFinal+=1
+    for i in range(clock_final[0]-entradaParteGrafica[-1][0]): 
+        buracosPorClock.append(buracosFinal)
+
+    for i in range(len(entradaParteGrafica)-1): #Período intermediário do algoritmo
+        buracosMeio = 0
+        if(entradaParteGrafica[i][1][0]>0):
+            buracosMeio+=1
+        if((entradaParteGrafica[i][-1][0]+entradaParteGrafica[i][-1][1])<tamMemoria):
+            buracosMeio+=1
+        for j in range(len(entradaParteGrafica[i])-2):
+            if((entradaParteGrafica[i][j+2][0]-entradaParteGrafica[i][j+1][1])>0):
+                buracosMeio+=1
+        for k in range(entradaParteGrafica[i+1][0]-entradaParteGrafica[i][0]): #Adiciona os buracos do final
+            buracosPorClock.append(buracosMeio)
+    return buracosPorClock

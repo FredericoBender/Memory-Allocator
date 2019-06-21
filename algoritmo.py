@@ -17,7 +17,6 @@ import funcoes as f
 #INICIALIZAÇÃO: Criação das estruturas necessárias
 processos = f.interpreta("ewerson.txt")
 f.listaDeTamanhos(processos)
-#tamanhos = lista de tamanho dos processos = [tamanho,...]
 dicionarioDeEntrada = f.dicionarioDeEntrada(processos)
 dicionarioDeSaida = f.dicionarioDeSaida(processos)
 dicionarioDeProcessos = {}
@@ -36,9 +35,9 @@ entradaParteGrafica =[]
 del processos
 ##################################################
 #modo = "best"
-modo ="first"
-#modo="worst"
-tamMemoria = 800
+#modo ="first"
+modo="worst"
+tamMemoria = 1024
 #Início algoritmo: Cada loop é um ciclo
 while (dicionarioDeSaida):
     dicanterior = str(dicionarioDeProcessos) #Utilizado no print de quando muda alguma coisa no dicionárioDeProcessos
@@ -73,7 +72,6 @@ while (dicionarioDeSaida):
                 
     #Remoção de processo
     if (clock in dicionarioDeSaida):
-
         while (dicionarioDeSaida[clock]):
             processo = dicionarioDeSaida[clock].pop() #Remove e salva ultimo elemento da lista
             dicionarioDeProcessos = f.desalocaProcesso(processo,dicionarioDeProcessos)
@@ -86,12 +84,13 @@ while (dicionarioDeSaida):
     clock+=1
 
 #Chamadas de funções para exibir os resultados finais
+clock_final = entradaParteGrafica[-1]
 del entradaParteGrafica[-1]
-nivelFragmentacaoMemoria = f.calculaFragmentacaoMemoria(entradaParteGrafica) #Quantos buracos existem na memória por ciclo de CLOCK
+
+nivelFragmentacaoMemoria = f.media(f.calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria)) #Quantos buracos existem na memória por ciclo de CLOCK
 mediaTempoEspera = round(f.media(tempoEspera),3)
 tempoAlocacao = f.media(tempoAlocacao)
 print("Nº de tentativas falhas: " + str(tentativasFalhadas) + " inserções falhas")
 print("Tempo médio de espera dos processos: " + str(mediaTempoEspera) + " períodos de clock")
 print("Tempo médio para alocação de processos: " + str(tempoAlocacao) + " segundos")
-#print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
-print("entrada da parte grafica: " + str(entradaParteGrafica))
+print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
