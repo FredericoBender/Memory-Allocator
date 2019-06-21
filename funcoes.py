@@ -161,3 +161,42 @@ def alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo):
        
     
     return dicionarioDeProcessos, True
+
+#Função que incrementa o número de tentativas falhas a cada vez que não conseguir inserir um processo
+def tentativasFalhas(inseriu,tentativasFalhadas):
+    if (inseriu==False):
+        tentativasFalhadas+=1
+        return tentativasFalhadas
+    return tentativasFalhadas
+
+#Função que incrementa o tempo de espera de cada processo, tem uma lista onde cada elemento representa o tempo que aquele processo aguardou
+def tempoMedioDeEsperaDeProcessos(inseriu,tempoEspera,processo):
+    if (inseriu==False):
+        tempoEspera[processo]+=1
+        return tempoEspera
+    return tempoEspera
+
+#Cálcula a média do tempo de espera para inserção dos processos na memória, e a média dos tempos médios de alocação
+def media(lista):
+    somatorio=0
+    for i in lista:
+        somatorio+=i
+    media=somatorio/(len(lista))
+    return media
+
+#Função que adiciona o tempo de inserção dos processos na memória em segundos, à uma lista
+def tempoMedioDeAlocacaoDeProcessos(tempoAlocacao,inseriu,tfinal,tinicial):
+    if (inseriu!=False):
+        time = (tfinal - tinicial)
+        tempoAlocacao.append(time)
+        return tempoAlocacao
+    return tempoAlocacao
+
+def geraEntradaDaParteGrafica(entradaParteGrafica,clock,dicionarioDeProcessos):
+    entradaParteGrafica
+    indiceClock = [clock] #Índice da lista "entradaParteGrafica" que também é uma lista
+    processos = list(dicionarioDeProcessos.values())
+    for i in processos:
+        indiceClock.append([i[0],i[1]-i[0]]) #append em indiceclock
+    entradaParteGrafica.append(indiceClock) 
+    return entradaParteGrafica
