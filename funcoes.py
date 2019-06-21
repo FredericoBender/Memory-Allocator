@@ -1,5 +1,4 @@
 #encoding=utf-8
-import math
 #DEFINIÇÃO DO PADRÃO DE ESCRITA
     #COMENTÁRIOS
         #1º Modo de escrita dos comentários livre, ´~^-_+=, etc, permitidos
@@ -12,6 +11,7 @@ import math
     #VARIÁVEIS
         #5º Variáveis iniciadas em mínuscula, SEM ´~^-_+= etc, SEM "De", se tiver mais de uma palavra, esta, deve ser iniciada em maíuscula
             #ex: meuNomeE, variavelSaida
+import math,random
 
 #Extrai valores do txt para criar as estruturas 
 def interpreta(arquivo):
@@ -23,7 +23,7 @@ def interpreta(arquivo):
     for i in range(len(processos)):
         for j in range(len(processos[i])):
             processos[i][j] = int(processos[i][j]) 
-    #lista de processos = [[int tamanho, int tempo de execução,int tempo de chegada],...]
+    #lista de processos = [[int tempo de chegada, int tempo de execução,int tamanho],...]
     return processos
 
 #Extrai valores da lista de processos para criar uma lista com os tamanhos de cada processo
@@ -31,7 +31,7 @@ def listaDeTamanhos(processos):
     global tamanhos
     tamanhos = []
     for i in processos:
-        tamanhos.append(i[0])
+        tamanhos.append(i[2])
     #lista de tamanho dos processos = [tamanho,...]
 
 #Extrai valores da lista de processos para criar um dicionário com os tempos de entrada de cada processo
@@ -39,10 +39,10 @@ def dicionarioDeEntrada(processos):
     temposEntrada ={}
     processoAtual=0
     for i in processos:
-        if (i[2] in temposEntrada):#processos[2] é tempo de chegada
-            temposEntrada[i[2]].append(processoAtual)
+        if (i[0] in temposEntrada):#processos[2] é tempo de chegada
+            temposEntrada[i[0]].append(processoAtual)
         else:
-            temposEntrada[i[2]]= [processoAtual]
+            temposEntrada[i[0]]= [processoAtual]
         processoAtual+=1
     #dicionário com os tempos de entrada dos processos = {ciclo de entrada:nº do processo,...}
     return temposEntrada
@@ -52,10 +52,10 @@ def dicionarioDeSaida(processos):
     temposSaida ={}
     processoAtual=0
     for i in processos:
-        if ((i[1]+i[2]) in temposSaida):
-            temposSaida[i[1]+i[2]].append(processoAtual)
+        if ((i[1]+i[0]) in temposSaida):
+            temposSaida[i[1]+i[0]].append(processoAtual)
         else:
-            temposSaida[i[1]+i[2]]= [processoAtual]
+            temposSaida[i[1]+i[0]]= [processoAtual]
         processoAtual+=1
     #dicionário com os tempos de saída dos processos = {ciclo de Saida:nº do processo,...}
     return temposSaida
@@ -163,6 +163,7 @@ def alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo):
     return dicionarioDeProcessos, True
 
 #Função que incrementa o número de tentativas falhas a cada vez que não conseguir inserir um processo
+
 def tentativasFalhas(inseriu,tentativasFalhadas):
     if (inseriu==False):
         tentativasFalhadas+=1
@@ -192,11 +193,22 @@ def tempoMedioDeAlocacaoDeProcessos(tempoAlocacao,inseriu,tfinal,tinicial):
         return tempoAlocacao
     return tempoAlocacao
 
+#Retorna os dados necessários para parte gráfica do algoritmo
 def geraEntradaDaParteGrafica(entradaParteGrafica,clock,dicionarioDeProcessos):
-    entradaParteGrafica
+    def funcao(var):
+        return var[0]    
     indiceClock = [clock] #Índice da lista "entradaParteGrafica" que também é uma lista
     processos = list(dicionarioDeProcessos.values())
+    processos.sort(key=funcao) #Ordena matriz pelo 1º indície
     for i in processos:
         indiceClock.append([i[0],i[1]-i[0]]) #append em indiceclock
+    print("isso: " +str(indiceClock)+"\n\n")
     entradaParteGrafica.append(indiceClock) 
     return entradaParteGrafica
+
+#Retorna uma lista com o número de buracos por ciclo de CLOCK na memória
+def calculaFragmentacaoMemoria(entradaParteGrafica):
+    #entradaParteGrafica=[[4,[4,1444],[2,5],[6,566]],[4,[4,1444],[2,5],[6,566]]]
+    #for i in entradaParteGrafica:
+    #    x=i.pop(0)
+    pass

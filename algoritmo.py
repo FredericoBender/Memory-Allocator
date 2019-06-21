@@ -11,9 +11,8 @@
     #VARIÁVEIS
         #5º Variáveis iniciadas em mínuscula, SEM ´~^-_+= etc, SEM "De", se tiver mais de uma palavra, esta, deve ser iniciada em maíuscula
             #ex: meuNomeE, variavelSaida
-import time
+import time,timeit
 import funcoes as f
-import timeit
 
 #INICIALIZAÇÃO: Criação das estruturas necessárias
 processos = f.interpreta("ewerson.txt")
@@ -33,12 +32,13 @@ tentativasFalhadas = 0
 tempoEspera = [0] * len(processos) #Inicializa vetor dos tempos de espera
 tempoAlocacao = []
 entradaParteGrafica =[]
+
 del processos
 ##################################################
-modo = "best"
-#modo ="first"
+#modo = "best"
+modo ="first"
 #modo="worst"
-tamMemoria = 3000
+tamMemoria = 800
 #Início algoritmo: Cada loop é um ciclo
 while (dicionarioDeSaida):
     dicanterior = str(dicionarioDeProcessos) #Utilizado no print de quando muda alguma coisa no dicionárioDeProcessos
@@ -48,7 +48,7 @@ while (dicionarioDeSaida):
         while (dicionarioDeEntrada[clock]):
             processo = dicionarioDeEntrada[clock].pop() #Remove e salva ultimo elemento da lista
             
-            tinicial = timeit.default_timer() #Usado para avaliar o tempo de inserção dos processos, foi comentado pois o tempo é tão pequeno que com 6 digitos significativos sempre retornava "0"
+            tinicial = timeit.default_timer() #Usado para avaliar o tempo de inserção dos processos
             dicionarioDeProcessos, inseriu = f.alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo)
             tfinal= timeit.default_timer()
 
@@ -85,10 +85,13 @@ while (dicionarioDeSaida):
         entradaParteGrafica = f.geraEntradaDaParteGrafica(entradaParteGrafica,clock,dicionarioDeProcessos) #Gera os dados necessários para parte gráfica
     clock+=1
 
-
+#Chamadas de funções para exibir os resultados finais
+del entradaParteGrafica[-1]
+nivelFragmentacaoMemoria = f.calculaFragmentacaoMemoria(entradaParteGrafica) #Quantos buracos existem na memória por ciclo de CLOCK
 mediaTempoEspera = round(f.media(tempoEspera),3)
 tempoAlocacao = f.media(tempoAlocacao)
 print("Nº de tentativas falhas: " + str(tentativasFalhadas) + " inserções falhas")
 print("Tempo médio de espera dos processos: " + str(mediaTempoEspera) + " períodos de clock")
 print("Tempo médio para alocação de processos: " + str(tempoAlocacao) + " segundos")
-print("estrada da parte grafica: " + str(entradaParteGrafica))
+#print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
+print("entrada da parte grafica: " + str(entradaParteGrafica))
