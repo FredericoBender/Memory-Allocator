@@ -14,83 +14,86 @@
 import time,timeit
 import funcoes as f
 
-#INICIALIZAÇÃO: Criação das estruturas necessárias
-processos = f.interpreta("ewerson.txt")
-f.listaDeTamanhos(processos)
-dicionarioDeEntrada = f.dicionarioDeEntrada(processos)
-dicionarioDeSaida = f.dicionarioDeSaida(processos)
-dicionarioDeProcessos = {}
-clock = 0
+def main(tamMemoria):
+    listaSaida = []
+    modos=["first","best","worst"]
+    for a in modos:
+        modo=a
+        #INICIALIZAÇÃO: Criação das estruturas necessárias
+        processos = f.interpreta("ewerson.txt")
+        f.listaDeTamanhos(processos)
+        dicionarioDeEntrada = f.dicionarioDeEntrada(processos)
+        dicionarioDeSaida = f.dicionarioDeSaida(processos)
+        dicionarioDeProcessos = {}
+        clock = 0
 
-"""print("\nDicionário de Entradas:\n")
-print(dicionarioDeEntrada, end='\n\n')
-print("Dicionário de Saídas:\n")
-print(dicionarioDeSaida,end='\n\n')"""
+        """print("\nDicionário de Entradas:\n")
+        print(dicionarioDeEntrada, end='\n\n')
+        print("Dicionário de Saídas:\n")
+        print(dicionarioDeSaida,end='\n\n')"""
 
-tentativasFalhadas = 0
-tempoEspera = [0] * len(processos) #Inicializa vetor dos tempos de espera
-tempoAlocacao = []
-entradaParteGrafica =[]
+        tentativasFalhadas = 0
+        tempoEspera = [0] * len(processos) #Inicializa vetor dos tempos de espera
+        tempoAlocacao = []
+        entradaParteGrafica =[]
 
-del processos
-##################################################
-#modo = "best"
-#modo ="first"
-modo="worst"
-tamMemoria = 1024
-#Início algoritmo: Cada loop é um ciclo
-while (dicionarioDeSaida):
-    dicanterior = str(dicionarioDeProcessos) #Utilizado no print de quando muda alguma coisa no dicionárioDeProcessos
+        del processos
+        ##################################################
+        #Início algoritmo: Cada loop é um ciclo
+        while (dicionarioDeSaida):
+            dicanterior = str(dicionarioDeProcessos) #Utilizado no print de quando muda alguma coisa no dicionárioDeProcessos
 
-    #Inserção de processo
-    if (clock in dicionarioDeEntrada):
-        while (dicionarioDeEntrada[clock]):
-            processo = dicionarioDeEntrada[clock].pop() #Remove e salva ultimo elemento da lista
-            
-            tinicial = timeit.default_timer() #Usado para avaliar o tempo de inserção dos processos
-            dicionarioDeProcessos, inseriu = f.alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo)
-            tfinal= timeit.default_timer()
+            #Inserção de processo
+            if (clock in dicionarioDeEntrada):
+                while (dicionarioDeEntrada[clock]):
+                    processo = dicionarioDeEntrada[clock].pop() #Remove e salva ultimo elemento da lista
+                    
+                    tinicial = timeit.default_timer() #Usado para avaliar o tempo de inserção dos processos
+                    dicionarioDeProcessos, inseriu = f.alocarMemoria(processo,tamMemoria,dicionarioDeProcessos,modo)
+                    tfinal= timeit.default_timer()
 
-            tempoAlocacao = f.tempoMedioDeAlocacaoDeProcessos(tempoAlocacao,inseriu,tfinal,tinicial) 
-            tentativasFalhadas = f.tentativasFalhas(inseriu,tentativasFalhadas) #Atualiza o número de falhas do algoritmo
-            tempoEspera = f.tempoMedioDeEsperaDeProcessos(inseriu,tempoEspera,processo)
-            
-            if (inseriu==False):
-                if (dicionarioDeEntrada.get(clock+1, False)):
-                    dicionarioDeEntrada[clock+1].append(processo)
-                else:
-                    dicionarioDeEntrada[clock+1]=[processo]
-                for i in dicionarioDeSaida:
-                    if processo in dicionarioDeSaida[i]:
-                        tempoDeSaida = i
-                if (dicionarioDeSaida.get(tempoDeSaida+1, False)):
-                    dicionarioDeSaida[tempoDeSaida+1].append(processo)
-                else:
-                    dicionarioDeSaida[tempoDeSaida+1]=[processo]
-                
-                dicionarioDeSaida[tempoDeSaida].remove(processo)
-                
-    #Remoção de processo
-    if (clock in dicionarioDeSaida):
-        while (dicionarioDeSaida[clock]):
-            processo = dicionarioDeSaida[clock].pop() #Remove e salva ultimo elemento da lista
-            dicionarioDeProcessos = f.desalocaProcesso(processo,dicionarioDeProcessos)
-        del dicionarioDeSaida[clock]
+                    tempoAlocacao = f.tempoMedioDeAlocacaoDeProcessos(tempoAlocacao,inseriu,tfinal,tinicial) 
+                    tentativasFalhadas = f.tentativasFalhas(inseriu,tentativasFalhadas) #Atualiza o número de falhas do algoritmo
+                    tempoEspera = f.tempoMedioDeEsperaDeProcessos(inseriu,tempoEspera,processo)
+                    
+                    if (inseriu==False):
+                        if (dicionarioDeEntrada.get(clock+1, False)):
+                            dicionarioDeEntrada[clock+1].append(processo)
+                        else:
+                            dicionarioDeEntrada[clock+1]=[processo]
+                        for i in dicionarioDeSaida:
+                            if processo in dicionarioDeSaida[i]:
+                                tempoDeSaida = i
+                        if (dicionarioDeSaida.get(tempoDeSaida+1, False)):
+                            dicionarioDeSaida[tempoDeSaida+1].append(processo)
+                        else:
+                            dicionarioDeSaida[tempoDeSaida+1]=[processo]
+                        
+                        dicionarioDeSaida[tempoDeSaida].remove(processo)
+                        
+            #Remoção de processo
+            if (clock in dicionarioDeSaida):
+                while (dicionarioDeSaida[clock]):
+                    processo = dicionarioDeSaida[clock].pop() #Remove e salva ultimo elemento da lista
+                    dicionarioDeProcessos = f.desalocaProcesso(processo,dicionarioDeProcessos)
+                del dicionarioDeSaida[clock]
 
 
-    if (dicanterior!=str(dicionarioDeProcessos)): #Só printa quando há uma alteração no dicionario
-        print(clock , dicionarioDeProcessos,end="\n\n")
-        entradaParteGrafica = f.geraEntradaDaParteGrafica(entradaParteGrafica,clock,dicionarioDeProcessos) #Gera os dados necessários para parte gráfica
-    clock+=1
+            if (dicanterior!=str(dicionarioDeProcessos)): #Só printa quando há uma alteração no dicionario
+                #print(clock , dicionarioDeProcessos,end="\n\n")
+                entradaParteGrafica = f.geraEntradaDaParteGrafica(entradaParteGrafica,clock,dicionarioDeProcessos) #Gera os dados necessários para parte gráfica
+            clock+=1
 
-#Chamadas de funções para exibir os resultados finais
-clock_final = entradaParteGrafica[-1]
-del entradaParteGrafica[-1]
+        #Chamadas de funções para exibir os resultados finais
+        clock_final = entradaParteGrafica[-1]
+        del entradaParteGrafica[-1]
 
-nivelFragmentacaoMemoria = f.media(f.calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria)) #Quantos buracos existem na memória por ciclo de CLOCK
-mediaTempoEspera = round(f.media(tempoEspera),3)
-tempoAlocacao = f.media(tempoAlocacao)
-print("Nº de tentativas falhas: " + str(tentativasFalhadas) + " inserções falhas")
-print("Tempo médio de espera dos processos: " + str(mediaTempoEspera) + " períodos de clock")
-print("Tempo médio para alocação de processos: " + str(tempoAlocacao) + " segundos")
-print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
+        nivelFragmentacaoMemoria = f.media(f.calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria)) #Quantos buracos existem na memória por ciclo de CLOCK
+        mediaTempoEspera = round(f.media(tempoEspera),3)
+        tempoAlocacao = f.media(tempoAlocacao)
+        #print("Nº de tentativas falhas: " + str(tentativasFalhadas) + " inserções falhas")
+        #print("Tempo médio de espera dos processos: " + str(mediaTempoEspera) + " períodos de clock")
+        #print("Tempo médio para alocação de processos: " + str(tempoAlocacao) + " segundos")
+        #print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
+        listaSaida.append([entradaParteGrafica,mediaTempoEspera,tentativasFalhadas,nivelFragmentacaoMemoria,tempoAlocacao])
+    return listaSaida
