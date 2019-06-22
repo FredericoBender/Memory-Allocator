@@ -64,7 +64,7 @@ def main(matrizGeral):
 
   # Curva First Fit
   valoresFirst = np.append(valoresFirst,valoresFirst[0])
-  print(valoresFirst)
+  #print(valoresFirst)
   ax.plot(angulos, valoresFirst, linewidth=2, linestyle='solid', label="First Fit")
   ax.fill(angulos, valoresFirst, 'b', alpha=0.1)
 
