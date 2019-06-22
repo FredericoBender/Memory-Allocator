@@ -125,6 +125,8 @@ class PageTwo(tk.Frame):
           while (x < (larguraDaJanela-20)):
             lista.append(canvas.create_line(x, y, x, y1, fill="#a0a0a0"))
             x += 1
+          global numeroDeLinhasMemoria
+          numeroDeLinhasMemoria = len(lista)
           return lista
 
 
@@ -149,31 +151,33 @@ class PageTwo(tk.Frame):
         ## Preenche a memória com o processo inserido
         ## Necessita do tamanho do processo, tamanho da memória e posição na memória
         def preencheMemoria(posicaoProcesso, tamProcesso):
-
-          # Calucula quantas linhas devem ser preenchidas
-          taxaDeLinhas = tamProcesso/tamMemoria
-          numeroDeLinhas = taxaDeLinhas * len(listaDeLinhas)
-          numeroDeLinhas = (int(numeroDeLinhas))+2
-          # Descobre quanto vale cada linha desenhada
-          pesoLinha = tamMemoria/len(listaDeLinhas)
-          # Descobre em qual lugar da memória deve começar a pintar as linhas
-          posicaoMemoria = posicaoProcesso/pesoLinha 
-          posicaoMemoria = (int(posicaoMemoria))+2
-          #Pinta do ponto range("X",y) até o ponto range(x,"Y")
-          cor = geraCor(posicaoProcesso, tamProcesso)
-          for i in range(posicaoMemoria,(posicaoMemoria+numeroDeLinhas)):
-            canvas.itemconfig(i, fill=cor)
-          
-          # print("Tamanho da Memoria: " + str(tamMemoria))
-          # print("Tamanho do processo: " + str(tamProcesso))
-          # print("Peso da Linha: " + str(pesoLinha))
-          # print("Posição do processo: " + str(posicaoProcesso))
-          # print("Numero de Linhas total: " + str(len(listaDeLinhas)))
-          # print("Posição na memória: " + str(posicaoMemoria))
-          # print("Numero de Linhas pra pintar: " + str(numeroDeLinhas)
+          if(tamProcesso != 0):
+            # Calucula quantas linhas devem ser preenchidas
+            taxaDeLinhas = tamProcesso/tamMemoria
+            numeroDeLinhas = taxaDeLinhas * len(listaDeLinhas)
+            numeroDeLinhas = (int(numeroDeLinhas))+2
+            # Descobre quanto vale cada linha desenhada
+            pesoLinha = tamMemoria/len(listaDeLinhas)
+            # Descobre em qual lugar da memória deve começar a pintar as linhas
+            posicaoMemoria = posicaoProcesso/pesoLinha 
+            posicaoMemoria = (int(posicaoMemoria))+2
+            #Pinta do ponto range("X",y) até o ponto range(x,"Y")
+            cor = geraCor(posicaoProcesso, tamProcesso)
+            for i in range(posicaoMemoria,(posicaoMemoria+numeroDeLinhas)):
+              canvas.itemconfig(i, fill=cor)
+            if(posicaoProcesso == 0):
+              for i in range(0,10):
+                canvas.itemconfig(i, fill=cor)
+            # print("Tamanho da Memoria: " + str(tamMemoria))
+            # print("Tamanho do processo: " + str(tamProcesso))
+            # print("Peso da Linha: " + str(pesoLinha))
+            # print("Posição do processo: " + str(posicaoProcesso))
+            # print("Numero de Linhas total: " + str(len(listaDeLinhas)))
+            # print("Posição na memória: " + str(posicaoMemoria))
+            # print("Numero de Linhas pra pintar: " + str(numeroDeLinhas)
 
         def limpaMemoria():
-          for i in range(0,tamMemoria):
+          for i in range(0,numeroDeLinhasMemoria):
             canvas.itemconfig(i, fill='#a0a0a0')
           
 
@@ -196,11 +200,10 @@ class PageTwo(tk.Frame):
           clock = estadoAtual[0]
           textoClock = tk.Label(self, text="Clock "+str(clock),font = "Helvetica 16 bold")
           textoClock.grid(column=2,row=0,padx=5)
-
           i = 1
+          
           limpaMemoria()
-          master.after(500, add_letter)
-          print(listaDeEstados)
+
           while (i <= len(estadoAtual)-1):
             posicaoProcesso = estadoAtual[i][0]
             tamProcesso = estadoAtual[i][1]
