@@ -4,6 +4,15 @@ import matplotlib.pyplot as plt
 from math import pi
 import numpy as np
 
+def padronizaMatriz(matriz):
+  matriz = matriz.astype(float)
+  matriz = matriz.transpose()
+  for i in range(len(matriz)):
+    maior = max(matriz[i])
+    matriz[i] = [n/maior for n in matriz[i]]
+  matriz = matriz.transpose()
+  return matriz
+
 def main(matrizGeral):
   # ------- PARTE 1: Criação do Fundo
 
@@ -12,13 +21,16 @@ def main(matrizGeral):
   # Nome das variáveis
   #categorias=["Tempo Médio de Espera de Processos", "Número de Tentativas Falhas","Nível de Fragmentação da Memória","Tempo Médio para Alocação de Processos"]
   categorias=["TME", "NTF","NFM","TMA"]
+  
+  for i in range(len(matrizGeral)):
+    del(matrizGeral[i][0])
 
-
+  matrizGeral = np.array(matrizGeral)
+  matrizGeral = padronizaMatriz(matrizGeral)
   # Valores que precisam ser definidos
-  valoresFirst = matrizGeral[0][1:]
-  #valoresFirst = [i*]
-  valoresBest =  matrizGeral[1][1:]
-  valoresWorst = matrizGeral[2][1:]
+  valoresFirst = matrizGeral[0]
+  valoresBest =  matrizGeral[1]
+  valoresWorst = matrizGeral[2]
 
   # Cálculo do ângulo de cada eixo baseado no número de variáveis
   angulos = [i / float(n) * 2 * pi for i in range(n)]
@@ -51,26 +63,26 @@ def main(matrizGeral):
   # ["Tempo Médio de Espera de Processos", "Número de Tentativas Falhas","Nível de Fragmentação da Memória","Tempo Médio para Alocação de Processos"]
 
   # Curva First Fit
-  valoresFirst += valoresFirst[:1]
+  valoresFirst = np.append(valoresFirst,valoresFirst[0])
+  print(valoresFirst)
   ax.plot(angulos, valoresFirst, linewidth=2, linestyle='solid', label="First Fit")
   ax.fill(angulos, valoresFirst, 'b', alpha=0.1)
 
   # Curva Best Fit
 
-  valoresBest += valoresBest[:1]
+  valoresBest = np.append(valoresBest,valoresBest[0])
   ax.plot(angulos, valoresBest, linewidth=2, linestyle='solid', label="Best Fit")
   ax.fill(angulos, valoresBest, 'r', alpha=0.1)
 
   # Curva Worst Fit
 
-  valoresWorst += valoresWorst[:1]
+  valoresWorst = np.append(valoresWorst,valoresWorst[0])
   ax.plot(angulos, valoresWorst, linewidth=2, linestyle='solid', label="Worst Fit")
   ax.fill(angulos, valoresWorst, 'g', alpha=0.1)
 
   # Desenha os ylabels
   ax.set_rlabel_position(0)
-  # Encontra o maior valor de todos
-  maiorValor = max([max(valoresFirst),max(valoresBest),max(valoresWorst)])
+
   # Faz um vetor com 4 numeros para desenhar a indicação do eixo
   def defineY(valor):
     quarto = valor/4
@@ -80,8 +92,9 @@ def main(matrizGeral):
       rounder = 1
     y = [rounder*round(i/rounder) for i in y]
     return y
-
-  y_ticks = defineY(maiorValor)
+  # maiorValor = max([np.amax(valoresBest),np.amax(valoresWorst),np.amax(valoresFirst)])
+  # y_ticks = defineY(maiorValor)
+  y_ticks = [0.25,0.5,0.75,1]
   # Define os valores do eixo y
   plt.yticks(y_ticks, size=10)
 
