@@ -83,7 +83,6 @@ def main(tamMemoria):
                 #print(clock , dicionarioDeProcessos,end="\n\n")
                 entradaParteGrafica = f.geraEntradaDaParteGrafica(entradaParteGrafica,clock,dicionarioDeProcessos) #Gera os dados necessários para parte gráfica
             clock+=1
-        print(modo)
         #Chamadas de funções para exibir os resultados finais
         clock_final = entradaParteGrafica[-1]
         del entradaParteGrafica[-1]
@@ -97,7 +96,5 @@ def main(tamMemoria):
         #print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
         entradaParteGrafica.append(clock_final) #adicionado para mostrar quando a memória fica vazia
         listaSaida.append([entradaParteGrafica,mediaTempoEspera,tentativasFalhadas,nivelFragmentacaoMemoria,tempoAlocacao])
-        print(nivelFragmentacaoMemoria)
-        print(entradaParteGrafica)
-        print(clock_final)
+        
     return listaSaida

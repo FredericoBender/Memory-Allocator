@@ -219,7 +219,7 @@ def calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria):
         buracosFinal+=1
     if(len(entradaParteGrafica[-1])>2):       
         for i in range(len(entradaParteGrafica[-1])-2):
-            if((entradaParteGrafica[-1][i+2][0]-entradaParteGrafica[-1][i+1][1])>0):
+            if((entradaParteGrafica[-1][i+2][0]-(entradaParteGrafica[-1][i+1][1]+entradaParteGrafica[-1][i+1][0]))>0):
                 buracosFinal+=1
     for i in range(clock_final[0]-entradaParteGrafica[-1][0]): 
         buracosPorClock.append(buracosFinal)
@@ -235,7 +235,7 @@ def calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria):
                 buracosMeio+=1
             if(len(entradaParteGrafica[i])>2):
                 for j in range(len(entradaParteGrafica[i])-2):###
-                    if((entradaParteGrafica[i][j+2][0]-entradaParteGrafica[i][j+1][1])>0):
+                    if((entradaParteGrafica[i][j+2][0]-(entradaParteGrafica[i][j+1][1]+entradaParteGrafica[i][j+1][0]))>0):
                         buracosMeio+=1
 
         for j in range(entradaParteGrafica[i+1][0]-entradaParteGrafica[i][0]):
