@@ -199,8 +199,7 @@ class PageTwo(tk.Frame):
 
           i = 1
           limpaMemoria()
-          import time 
-          time.sleep(0.2)
+          master.after(500, add_letter)
           print(listaDeEstados)
           while (i <= len(estadoAtual)-1):
             posicaoProcesso = estadoAtual[i][0]

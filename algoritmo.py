@@ -94,8 +94,9 @@ def main(tamMemoria):
         #print("Tempo médio de espera dos processos: " + str(mediaTempoEspera) + " períodos de clock")
         #print("Tempo médio para alocação de processos: " + str(tempoAlocacao) + " segundos")
         #print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
+        entradaParteGrafica.append(clock_final) #adicionado para mostrar quando a memória fica vazia
         listaSaida.append([entradaParteGrafica,mediaTempoEspera,tentativasFalhadas,nivelFragmentacaoMemoria,tempoAlocacao])
-        
+        print(nivelFragmentacaoMemoria)
+        print(entradaParteGrafica)
+        print(clock_final)
     return listaSaida
-
-main(300)
