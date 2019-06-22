@@ -83,7 +83,6 @@ def main(tamMemoria):
                 #print(clock , dicionarioDeProcessos,end="\n\n")
                 entradaParteGrafica = f.geraEntradaDaParteGrafica(entradaParteGrafica,clock,dicionarioDeProcessos) #Gera os dados necessários para parte gráfica
             clock+=1
-        print(modo)
         #Chamadas de funções para exibir os resultados finais
         clock_final = entradaParteGrafica[-1]
         del entradaParteGrafica[-1]
