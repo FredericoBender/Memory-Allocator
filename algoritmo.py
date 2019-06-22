@@ -96,11 +96,5 @@ def main(tamMemoria):
         #print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
         entradaParteGrafica.append(clock_final) #adicionado para mostrar quando a memória fica vazia
         listaSaida.append([entradaParteGrafica,mediaTempoEspera,tentativasFalhadas,nivelFragmentacaoMemoria,tempoAlocacao])
-<<<<<<< HEAD
-        # print(nivelFragmentacaoMemoria)
-        # print(entradaParteGrafica)
-        # print(clock_final)
-=======
         
->>>>>>> 3996066d534decf619ceac956264ea2014141b32
     return listaSaida
