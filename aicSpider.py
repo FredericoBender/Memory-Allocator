@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Bibliotecas
 import matplotlib.pyplot as plt
-from math import pi
 import numpy as np
+from math import pi
 
 def main(matrizGeral):
   # ------- PARTE 1: Criação do Fundo

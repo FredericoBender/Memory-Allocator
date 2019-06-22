@@ -2,8 +2,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from random import choice
-import algoritmo
-import aicSpider
+import algoritmo, aicSpider
 
 class SampleApp(tk.Tk):
     def __init__(self):

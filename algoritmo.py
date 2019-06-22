@@ -11,7 +11,7 @@
     #VARIÁVEIS
         #5º Variáveis iniciadas em mínuscula, SEM ´~^-_+= etc, SEM "De", se tiver mais de uma palavra, esta, deve ser iniciada em maíuscula
             #ex: meuNomeE, variavelSaida
-import time,timeit
+import timeit
 import funcoes as f
 
 def main(tamMemoria):
@@ -20,7 +20,7 @@ def main(tamMemoria):
     for a in modos:
         modo=a
         #INICIALIZAÇÃO: Criação das estruturas necessárias
-        processos = f.interpreta("ewerson.txt")
+        processos = f.interpreta("entrada.txt")
         f.listaDeTamanhos(processos)
         dicionarioDeEntrada = f.dicionarioDeEntrada(processos)
         dicionarioDeSaida = f.dicionarioDeSaida(processos)
@@ -96,8 +96,5 @@ def main(tamMemoria):
         #print("média de buracos por ciclo de CLOCK: " +str(nivelFragmentacaoMemoria))
         entradaParteGrafica.append(clock_final) #adicionado para mostrar quando a memória fica vazia
         listaSaida.append([entradaParteGrafica,mediaTempoEspera,tentativasFalhadas,nivelFragmentacaoMemoria,tempoAlocacao])
-
-        print(listaSaida)
-
 
     return listaSaida
