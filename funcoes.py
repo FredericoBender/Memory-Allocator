@@ -11,7 +11,6 @@
     #VARIÁVEIS
         #5º Variáveis iniciadas em mínuscula, SEM ´~^-_+= etc, SEM "De", se tiver mais de uma palavra, esta, deve ser iniciada em maíuscula
             #ex: meuNomeE, variavelSaida
-import math,random
 
 #Extrai valores do txt para criar as estruturas 
 def interpreta(arquivo):

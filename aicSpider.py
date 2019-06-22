@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Bibliotecas
 import matplotlib.pyplot as plt
-from math import pi
 import numpy as np
+from math import pi
 
 def padronizaMatriz(matriz):
   matriz = matriz.astype(float)
