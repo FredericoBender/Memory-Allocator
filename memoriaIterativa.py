@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 from random import choice
 import algoritmo
+import aicSpider
 
 class SampleApp(tk.Tk):
     def __init__(self):
@@ -174,6 +175,7 @@ class PageTwo(tk.Frame):
         def limpaMemoria():
           for i in range(0,tamMemoria):
             canvas.itemconfig(i, fill='#a0a0a0')
+          
 
         ##### Botoes de Controle ######
         #Função Geral dos botoes
@@ -182,7 +184,7 @@ class PageTwo(tk.Frame):
           if(botao == "proximo"):
             if (momento < len(listaDeEstados)-1):
               momento += 1
-          if(botao == "anterior"):
+          if((botao == "anterior") and (momento != 0)):
             if (momento > 0):
               momento -= 1
           if(botao == "inicio"):
@@ -197,6 +199,8 @@ class PageTwo(tk.Frame):
 
           i = 1
           limpaMemoria()
+          master.after(500, add_letter)
+          print(listaDeEstados)
           while (i <= len(estadoAtual)-1):
             posicaoProcesso = estadoAtual[i][0]
             tamProcesso = estadoAtual[i][1]
@@ -226,6 +230,8 @@ class PageTwo(tk.Frame):
         global matrizGeral
         matrizGeral = algoritmo.main(tamMemoria)
         listaDeEstados = matrizGeral[modo-1][0]
+        listaDeEstados.insert(0,[0,[0,0]])
+
         # Momento (clock atual)
         global momento
         momento = 0
@@ -239,12 +245,18 @@ class PageTwo(tk.Frame):
         botaoAnterior.grid(column=0,row=3,pady=10)
         # Função do botao que chama o matplot
         def pressionadoGrafico(PageThree):
-            master.switch_frame(PageThree)
+            # Opção 1: Chamar janela tkinter que recebe imagem do matplot
+            #master.switch_frame(PageThree)
+            # Opção 2: Chamar matplot direto
+            self.master.destroy()
+            aicSpider.main(matrizGeral)
         botaoGraficos = tk.Button(self, text="Ir Para Gráficos",command=lambda: pressionadoGrafico(PageThree))
         botaoGraficos.grid(column=1,row=4,pady=5)
         #Posição do Canvas
         canvas.grid(columnspan=3,row=1)
 
+
+#Tentativa de fazer uma terceira janela TkInter
 class PageThree(tk.Frame):
 
       def __init__(self, master):
@@ -264,6 +276,8 @@ class PageThree(tk.Frame):
 
         master.geometry("%dx%d+%d+%d" % (larguraDaJanela, alturaDaJanela, Xjanela,Yjanela))
         ##########################
+        aicSpider.main()
+        #img = aicSpider.main()
         label = tk.Label(self, text="This is page 2")
         label.grid(pady=10)
         button = tk.Button(self, text="Go to the start page",
