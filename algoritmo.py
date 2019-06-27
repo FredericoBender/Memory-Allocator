@@ -87,9 +87,9 @@ def main(tamMemoria):
         clock_final = entradaParteGrafica[-1]
         del entradaParteGrafica[-1]
 
-        nivelFragmentacaoMemoria = f.media(f.calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria)) #Quantos buracos existem na memória por ciclo de CLOCK
+        nivelFragmentacaoMemoria = round(f.media(f.calculaFragmentacaoMemoria(entradaParteGrafica,clock_final,tamMemoria)),3) #Quantos buracos existem na memória por ciclo de CLOCK
         mediaTempoEspera = round(f.media(tempoEspera),3)
-        tempoAlocacao = f.media(tempoAlocacao)
+        tempoAlocacao = round(f.media(tempoAlocacao)*1000000,3) #Tempo em μs
         #print("Nº de tentativas falhas: " + str(tentativasFalhadas) + " inserções falhas")
         #print("Tempo médio de espera dos processos: " + str(mediaTempoEspera) + " períodos de clock")
         #print("Tempo médio para alocação de processos: " + str(tempoAlocacao) + " segundos")

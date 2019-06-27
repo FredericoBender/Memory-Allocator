@@ -5,13 +5,15 @@ import numpy as np
 from math import pi
 
 def padronizaMatriz(matriz):
+  maiores=[]
   matriz = matriz.astype(float)
   matriz = matriz.transpose()
   for i in range(len(matriz)):
     maior = max(matriz[i])
+    maiores.append(maior)
     matriz[i] = [n/maior for n in matriz[i]]
   matriz = matriz.transpose()
-  return matriz
+  return matriz,maiores
 
 def main(matrizGeral):
   # ------- PARTE 1: Criação do Fundo
@@ -26,7 +28,7 @@ def main(matrizGeral):
     del(matrizGeral[i][0])
 
   matrizGeral = np.array(matrizGeral)
-  matrizGeral = padronizaMatriz(matrizGeral)
+  matrizGeral, maiores= padronizaMatriz(matrizGeral)
   # Valores que precisam ser definidos
   valoresFirst = matrizGeral[0]
   valoresBest =  matrizGeral[1]
@@ -108,11 +110,16 @@ def main(matrizGeral):
   ax2.axes.get_xaxis().set_visible(False)
   ax2.axes.get_yaxis().set_visible(False)
   # inserir textos
-  ax2.text(0, 0.35,u"NFM = Nível de Fragmentação da Memória")
-  ax2.text(0, 0.45,u"NTF = Número de Tentativas Falhas")
-  ax2.text(0, 0.55,u"TMA = Tempo Médio para Alocação de Processos")
-  ax2.text(0, 0.65,u"TME = Tempo Médio de Espera de Processos")
+  print(maiores)
+  ax2.text(0, 0.2,u"NFM = Nível de Fragmentação da Memória")
+  ax2.text(0, 0.4,u"NTF = Número de Tentativas Falhas")
+  ax2.text(0, 0.6,u"TMA = Tempo Médio para Alocação de Processo")
+  ax2.text(0, 0.8,u"TME = Tempo Médio de Espera de Processo")
   
+  ax2.text(0, 0.15,u"MÁX = " + str(maiores[2]) +" Buracos por Ciclo de Clock")
+  ax2.text(0, 0.35,u"MÁX = " + str(int(maiores[1])) + " Tentativas Falhas")
+  ax2.text(0, 0.55,u"MÁX = " + str(maiores[3]) + " μs")
+  ax2.text(0, 0.75,u"MÁX = " + str(maiores[0]) + " Ciclos de Clock")
   # Define nome da janela
   man = plt.get_current_fig_manager()
   man.canvas.set_window_title("Gráfico de análise dos resultados")
